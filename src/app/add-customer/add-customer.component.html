@@ -1,0 +1,115 @@
+<div class="container">
+    <form [formGroup]="angForm" class="p-3 col-sm-5 mx-auto">
+        <h5 class="text-center my-3">Please Fill the Details</h5>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <div class="">
+              <input type="text" class="form-control" id="name"
+               name="name" required formControlName="name" pattern="[a-zA-Z ]*" required
+               > 
+            </div>        
+            <div *ngIf="angForm.controls['name'].invalid && (angForm.controls['name'].dirty || angForm.controls['name'].touched)">
+                <div class="" style="color: red;" *ngIf="angForm.controls['name'].errors.pattern">Enter only characters</div>
+                <div class="" style="color: red;" *ngIf="angForm.controls['name'].errors.required">Name is required.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="contact">Phone Number</label>
+            <div class="">
+             <input type="tel"  required class="form-control" id="contact" name="contact" pattern="[0-9]*" required minlength="10"
+             formControlName="contact"
+             >
+            </div>
+            <div *ngIf="angForm.controls['contact'].invalid && (angForm.controls['contact'].dirty || angForm.controls['contact'].touched)">
+                <div class="" style="color: red;" *ngIf="angForm.controls['contact'].errors.required">Phone number is required.</div>
+                <div class="" style="color: red;" *ngIf="angForm.controls['contact'].errors.pattern">Please Enter valid number</div>
+                <div class="" style="color: red;" *ngIf="angForm.controls['contact'].errors.minlength">Please Enter 10 Digit number</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  for="email">Email</label>
+            <div class="">
+            <input type="email" class="form-control" required  name="email" 
+            formControlName="email"
+            >
+            </div>
+            <div *ngIf="angForm.controls['email'].invalid && (angForm.controls['email'].dirty || angForm.controls['email'].touched)">
+                <div class="" style="color: red;" *ngIf="angForm.controls['email'].errors.required">Email is required.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="form-control">
+                <input  type="radio" value="Male" class="mr-2" name="gender" [(ngModel)]="gender"
+                [ngModelOptions]="{standalone: true}" >Male
+                <input  type="radio" value="Female" class="ml-5 mr-2" name="gender" [(ngModel)]="gender"
+                [ngModelOptions]="{standalone: true}">Female
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div style="display: flex; justify-content: space-between;">
+                <div style="width:45%;">
+                    <label for="toloactionlist">To Location</label>
+                    <select class="form-control" id="sel1"
+                     [(ngModel)]="toLocation"
+                    [ngModelOptions]="{standalone: true}" required (change)="dropDownValue()">
+                        <option *ngFor="let city of toCities" [value]="city">{{city}}</option>
+                    </select>
+                </div>
+                <div style="width:45%;">
+                <label for="tofromlist">From Location</label>
+                    <select class="form-control" id="sel1" [(ngModel)]="fromLocation"
+                    [ngModelOptions]="{standalone: true}" required (change)="dropDownValue()">
+                        <option *ngFor="let city of fromCities" [value]="city">{{city}}</option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="flagCheckDrop">
+                <div class="" style="color: red;">City should not be same.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div style="display: flex; justify-content: space-between;">
+                <div style="width:45%;">
+                    <label for="picpoint col">Pickup point</label>
+                    <select class="form-control" id="picpoint" [(ngModel)]="pickupLocation"
+                    [ngModelOptions]="{standalone: true}" required >
+                        <option *ngFor="let point of pickPoint" [value]="point">{{point}}</option>
+                    </select>
+                </div>
+                <div style="width:45%;">
+                <label for="tofromlist">Drop Point</label>
+                    <select class="form-control" id="droppoint" [(ngModel)]="dropLocation"
+                    [ngModelOptions]="{standalone: true}" required>
+                        <option *ngFor="let point of dropPoint" [value]="point">{{point}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label" for="gender">Facilities to be availed</label>
+            <div>
+                <span *ngFor="let data of Data; let i=index" class="mr-4">
+                    <label>
+                        <input type="checkbox" [value]="data.value" (change)="onCheckboxChange($event)" />
+                            {{data.name}}
+                     </label>
+                </span>
+            </div>
+        </div>
+        
+        
+            <div class="form-group">        
+                    <div class="col-sm-offset-2 mx-auto">
+                    <button class="btn btn-danger" (click)="adddata()" type="submit">Submit Data</button>
+                </div>
+            </div>           
+    </form>
+  </div>

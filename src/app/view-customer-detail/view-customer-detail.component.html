@@ -1,0 +1,154 @@
+<div class="container" *ngIf="!flag">
+	<div class="row">
+		<table class="table table-hover table-responsive mt-3">
+		    <thead>
+                <tr>
+		            <th>Id</th>
+		            <th>Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Gender</th>
+                    <th>To Location</th>
+                    <th>From Location</th>
+                    <th>Facilities</th>
+		            <th>Edit</th>
+		            <th>Delete</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr id="d1" *ngFor="let items of customerDetails">
+                    <td>{{items.id}}</td>
+                    <td>{{items.name}}</td>
+                    <td>{{items.email}}</td>
+                    <td>{{items.contact}}</td>
+                    <td>{{items.gender}}</td>
+                    <td>{{items.toLocation}}</td>
+                    <td>{{items.fromLocation}}</td>
+                    <td>{{items.facilities}}</td>
+                    <td><button type="button" data-toggle="modal" data-target="#edit" data-uid="1"
+                      (click)="updateData(items.id)" class="update btn btn-warning btn-sm">Edit</button></td>
+                    <td><button type="button" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"
+                      (click)="deleteData(items.id)">Delete</button></td>
+		        </tr>
+		    </tbody>
+		</table>
+	</div>
+</div>
+
+
+<div class="container" *ngIf="flag">
+  <form [formGroup]="angForm" class="p-3 col-sm-5 mx-auto">
+      <h5 class="text-center my-3">Please Fill the Details</h5>
+      <div class="form-group">
+          <label for="name">Name</label>
+          <div class="">
+            <input type="text" class="form-control" id="name"
+             name="name" required formControlName="name" pattern="[a-zA-Z ]*"
+             > 
+          </div>        
+          <div *ngIf="angForm.controls['name'].invalid && (angForm.controls['name'].dirty || angForm.controls['name'].touched)">
+              <div class="" style="color: red;" *ngIf="angForm.controls['name'].errors.pattern">Enter only characters</div>
+              <div class="" style="color: red;" *ngIf="angForm.controls['name'].errors.required">Name is required.</div>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="contact">Phone Number</label>
+          <div class="">
+           <input type="tel" class="form-control" id="contact" name="contact" pattern="[0-9]*" required minlength="10"
+           formControlName="contact"
+           >
+          </div>
+          <div *ngIf="angForm.controls['contact'].invalid && (angForm.controls['contact'].dirty || angForm.controls['contact'].touched)">
+              <div class="" style="color: red;" *ngIf="angForm.controls['contact'].errors.required">Phone number is required.</div>
+              <div class="" style="color: red;" *ngIf="angForm.controls['contact'].errors.pattern">Please Enter valid number</div>
+              <div class="" style="color: red;" *ngIf="angForm.controls['contact'].errors.minlength">Please Enter 10 Digit number</div>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label  for="email">Email</label>
+          <div class="">
+          <input type="email" class="form-control" id="email" name="email" 
+          formControlName="email"
+          >
+          </div>
+          <div *ngIf="angForm.controls['email'].invalid && (angForm.controls['email'].dirty || angForm.controls['email'].touched)">
+              <div class="" style="color: red;" *ngIf="angForm.controls['email'].errors.required">Email is required.</div>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="">Gender</label>
+          <div class="form-control">
+              <input  type="radio" value="Male" class="mr-2" name="gender" [(ngModel)]="gender"
+              [ngModelOptions]="{standalone: true}" >Male
+              <input  type="radio" value="Female" class="ml-5 mr-2" name="gender" [(ngModel)]="gender"
+              [ngModelOptions]="{standalone: true}">Female
+          </div>
+      </div>
+
+      <div class="form-group">
+          <div class="" style="display: flex; justify-content: space-between;">
+              <div style="width:45%;">
+                  <label for="toloactionlist">To Location</label>
+                  <select class="form-control" id="sel1" [(ngModel)]="toLocation"
+                  [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let city of toCities" [value]="city">{{city}}</option>
+                  </select>
+              </div>
+              <div style="width:45%;">
+              <label for="tofromlist">From Location</label>
+                  <select class="form-control" id="sel1" [(ngModel)]="fromLocation"
+                  [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let city of fromCities" [value]="city">{{city}}</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <div class="" style="display: flex; justify-content: space-between;">
+              <div style="width:45%;">
+                  <label for="picpoint col">Pickup point</label>
+                  <select class="form-control" id="picpoint" [(ngModel)]="pickupLocation"
+                  [ngModelOptions]="{standalone: true}" >
+                      <option *ngFor="let point of pickPoint" [value]="point">{{point}}</option>
+                  </select>
+              </div>
+              <div style="width:45%;">
+              <label for="tofromlist">Drop Point</label>
+                  <select class="form-control" id="droppoint" [(ngModel)]="dropLocation"
+                  [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let point of dropPoint" [value]="point">{{point}}</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+
+
+      <div class="form-group">
+          <label class="control-label" for="gender">Facilities to be availed</label>
+          <div class="">                
+               <label class="checkbox-inline mr-4">
+                  <input type = "checkbox" value="AC">AC
+               </label>
+               <label class = "checkbox-inline mr-4">
+                  <input type="checkbox" value="Non AC">Non AC
+               </label>
+               
+               <label class = "checkbox-inline mr-4">
+                  <input type ="checkbox" value= "Sleeper">Sleeper
+               </label> 
+               <label class = "checkbox-inline mr-4">
+                  <input type ="checkbox" value = "Seater">Seater
+               </label>
+          </div>
+      </div>
+          <div class="form-group">        
+            <div class="col-sm-offset-2 mx-auto">
+                <button class="btn btn-danger" type="submit" (click)="updateformdata()" >Update Data</button>
+            </div>
+        </div>          
+  </form>
+</div>
